@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  #Homepage
+
+  get("/", { :controller => "application", :action => "index" })
+
   # Routes for the Comment resource:
 
   # CREATE
