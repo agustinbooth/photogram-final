@@ -33,5 +33,9 @@ class Photo < ApplicationRecord
 
   has_many(:fan_followers, { :through => :fans, :source => :following })
 
+  #Image uploader
+  
+  mount_uploader :image, ImageUploader
+
 
 end
