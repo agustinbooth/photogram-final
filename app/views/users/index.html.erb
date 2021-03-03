@@ -35,7 +35,7 @@
 
       <%if @list_of_follows.where({:recipient_id => a_user.id, :status => "accepted"}).present?%>
 
-       <a href="/delete_follow_request/2193">
+       <a href="/delete_follow_request/<%= @list_of_follows.where({:recipient_id => a_user.id}).first.id %>">
          Unfollow
        </a>
 
@@ -43,7 +43,7 @@
 
         Request sent.
 
-       <a href="/delete_follow_request/2104">
+       <a href="/delete_follow_request/<%= @list_of_follows.where({:recipient_id => a_user.id}).first.id %>">
        Cancel
        </a> 
 
@@ -51,13 +51,12 @@
 
       <%else%> 
     
-      <form action="/insert_follow_request" method="post">
-        <input type="hidden" name="query_recipient_id" value="<%= a_user.id %>"
+       <form action="/insert_follow_request" method="post">
+         <input type="hidden" name="query_recipient_id" value="<%=a_user.id%>">
 
         <button>
-        Follow
+          Follow
         </button>
-      </form>
 
       <%end%>   
 
