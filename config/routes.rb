@@ -60,7 +60,8 @@ Rails.application.routes.draw do
 
   #READ
 
-  get("/users", { :controller => "application", :action => "index" })   
+  get("/users", { :controller => "application", :action => "index" })
+  get("/users/:username", { :controller => "application", :action => "show" })   
 
   # SIGN UP FORM
   get("/user_sign_up", { :controller => "user_authentication", :action => "sign_up_form" })        

@@ -23,5 +23,19 @@ class ApplicationController < ActionController::Base
   render({:template => "users/index.html.erb"})
   end
 
+  def show
+
+    if @current_user.present?
+
+    render({:template => "users/show.html.erb"})
+
+    else
+    
+    redirect_to("/user_sign_in", { :notice => "You have to sign in first." })
+    
+    end
+
+  end
+
 
 end
