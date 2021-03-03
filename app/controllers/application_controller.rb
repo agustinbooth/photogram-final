@@ -20,6 +20,14 @@ class ApplicationController < ActionController::Base
     matching_users = User.all
     @list_of_users = matching_users.order({:username => :asc})
 
+    if @current_user.present?
+
+    matching_follows = FollowRequest.all
+    @list_of_follows = matching_follows.where({:sender_id => @current_user.id})
+
+    else
+    end
+
   render({:template => "users/index.html.erb"})
   end
 

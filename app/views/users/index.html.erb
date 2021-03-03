@@ -32,9 +32,37 @@
 
     <td>
     <%if @current_user.present?%>
-     Aqui va follows request
-     <%else%>
-     <%end%>
+
+      <%if @list_of_follows.where({:recipient_id => a_user.id, :status => "accepted"}).present?%>
+
+       <a href="/delete_follow_request/2193">
+         Unfollow
+       </a>
+
+      <%elsif @list_of_follows.where({:recipient_id => a_user.id, :status => "pending"}).present?%>
+
+        Request sent.
+
+       <a href="/delete_follow_request/2104">
+       Cancel
+       </a> 
+
+      <%elsif @list_of_follows.where({:recipient_id => a_user.id, :status => "rejected"}).present?%>
+
+      <%else%> 
+    
+      <form action="/insert_follow_request" method="post">
+        <input type="hidden" name="query_recipient_id" value="<%= a_user.id %>"
+
+        <button>
+        Follow
+        </button>
+      </form>
+
+      <%end%>   
+
+    <%else%>
+    <%end%>
 
      </td>
 
