@@ -45,6 +45,13 @@ class ApplicationController < ActionController::Base
       following = @user.sent_follow_requests
       @accepted_following = following.where({:status => "accepted"})
 
+      accept = FollowRequest.all.where({:status => "accepted"})
+      @follows = accept.where({:recipient_id => @user.id, :sender_id => @current_user.id}).or(
+        accept.where({:recipient_id => @current_user.id, :sender_id => @user.id})
+        )
+
+
+
 
     render({:template => "users/show.html.erb"})
 
