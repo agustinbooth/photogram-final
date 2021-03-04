@@ -1,29 +1,42 @@
-    <h1>anisa</h1>
+    <h1><%= @user.username%></h1>
 
+ 
 <dl>
   <dt>Private</dt>
-  <dd>true</dd>
+  <dd><%= @user.private %></dd>
 
   <dt>Followers</dt>
   <dd>
-    3
+    <%= @accepted_followers.length %>
 
     </div>
 
       <h4>Pending follow requests</h4>
 
       <ul>
-          <li>
-            alice
 
-            <form action="/modify_follow_request/2355" method="post">
+      <% @pending_followers.each do |a_pending| %>
+          <li>
+            <%= a_pending.sender.username %>
+
+            <form action="/modify_follow_request/<%= a_pending.id %>" method="post">
               <input name="query_status" value="accepted" type="hidden">
 
               <button>
                 Accept
               </button>
             </form>
+
+            <form action="/modify_follow_request/<%= a_pending.id %>" method="post">
+              <input name="query_status" value="rejected" type="hidden">
+
+              <button>
+                Reject
+              </button>
+            </form>
+
           </li>
+          <% end %>
         </ul>
 
         <dt>Following</dt>

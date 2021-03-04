@@ -34,6 +34,14 @@ class ApplicationController < ActionController::Base
   def show
 
     if @current_user.present?
+      username = params.fetch("username")
+      @user = User.all.where({:username => username}).first
+
+      followers = @user.received_follow_requests
+
+      @accepted_followers = followers.where({:status => "accepted"})
+      @pending_followers = followers.where({:status => "pending"})
+
 
     render({:template => "users/show.html.erb"})
 
