@@ -42,6 +42,9 @@ class ApplicationController < ActionController::Base
       @accepted_followers = followers.where({:status => "accepted"})
       @pending_followers = followers.where({:status => "pending"})
 
+      following = @user.sent_follow_requests
+      @accepted_following = following.where({:status => "accepted"})
+
 
     render({:template => "users/show.html.erb"})
 

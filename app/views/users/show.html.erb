@@ -40,11 +40,11 @@
         </ul>
 
         <dt>Following</dt>
-  <dd>13</dd>
+  <dd><%= @accepted_following.length%></dd>
 
   <dt>Edit user</dt>
   <dd>
-    <form action="/modify_user/117" method="post">
+    <form action="/modify_user/<%= @current_user.id %>" method="post">
       <label for="browser_username">Username</label>
       <input id="browser_username" type="text" name="query_username" placeholder="Enter a username..."
         value="anisa">
@@ -60,21 +60,21 @@
 <nav>
   <ul>
     <li>
-      <a href="/users/anisa">Profile</a>
+      <a href="/users/<%=@user.username%>">Profile</a>
     </li>
     <li>
-      <a href="/users/anisa/liked_photos">Liked photos</a>
+      <a href="/users/<%=@user.username%>/liked_photos">Liked photos</a>
     </li>
     <li>
-      <a href="/users/anisa/feed">Feed</a>
+      <a href="/users/<%=@user.username%>/feed">Feed</a>
     </li>
     <li>
-      <a href="/users/anisa/discover">Discover</a>
+      <a href="/users/<%=@user.username%>/discover">Discover</a>
     </li>
   </ul>
 </nav>
 
-<h2>Own photos (1)</h2>
+<h2>Own photos (<%= @user.own_photos.length %>)</h2>
 
 <table border="1">
   <tr>
@@ -102,30 +102,32 @@
   </tr>
 
   <tr>
+  <% @user.own_photos.each do |a_photo|%>
     <td>
-      <img src="http://res-4.cloudinary.com/dt1gn6erd/image/upload/v1614812838/lxhkok8io8ouunptecdo.png">
+      <img src="<%= a_photo.image %>">
     </td>
 
     <td>
-      anisa
+      <%= a_photo.owner.username %>
     </td>
 
     <td>
-      hola
+      <%= a_photo.caption %>
     </td>
 
     <td>
-      4 minutes ago
+      <%= time_ago_in_words(a_photo.created_at) %> ago
     </td>
 
     <td>
-      0
+      <%= a_photo.likes_count %>
     </td>
 
     <td>
-      <a href="/photos/951">
+      <a href="/photos/<%= a_photo.id %>">
         Show details
       </a>
     </td>
+    <%end%>
   </tr>
 </table>
