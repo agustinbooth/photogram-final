@@ -66,7 +66,7 @@ class ApplicationController < ActionController::Base
 
     else
     
-    redirect_to("/user_sign_in", { :notice => "You have to sign in first." })
+    redirect_to("/user_sign_in", { :alert => "You have to sign in first." })
     
     end
 
