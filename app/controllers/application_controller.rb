@@ -72,7 +72,6 @@ class ApplicationController < ActionController::Base
 
   following = @user.sent_follow_requests
   @accepted_following = following.where({:status => "accepted"})
-  #user_following = @accepted_following.recipient
 
   following_users = Array.new
 
@@ -105,6 +104,21 @@ class ApplicationController < ActionController::Base
 
 
   render({:template => "users/feed.html.erb"})
+
+  end
+
+  def liked_photos
+
+    @user = User.all.where({:username => params.fetch("username")}).first
+    followers = @user.received_follow_requests
+    @accepted_followers = followers.where({:status => "accepted"})
+
+    following = @user.sent_follow_requests
+    @accepted_following = following.where({:status => "accepted"})
+    
+    @liked_photos = @user.liked_photos
+
+    render({:template => "users/liked_photos.html.erb"})
 
   end
 
