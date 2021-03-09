@@ -38,12 +38,40 @@
 
   <dt>Add a fan</dt>
   <dd>
-
+    <%if Like.where({:photo_id => @the_photo.id, :fan_id => @current_user.id}).present?%>
+      <a href="/delete_like/<%= Like.where({:photo_id => @the_photo.id, :fan_id => @current_user.id}).first.id%>">
+        Unlike
+      </a>
+    <%else%>
     <form action="/insert_like" method="post">
       <input type="hidden" value="<%=@the_photo.id%>" name="query_photo_id">
       <button>Like</button>
     </form>
+    <%end%>
   </dd>
+
+  <%if @the_photo.owner.id == @current_user.id%>
+    <dt>Edit photo</dt>
+  <dd>
+    <form action="/modify_photo/<%=@the_photo.id%>" method="post" enctype="multipart/form-data">
+      <label for="browser_image">Image URL</label>
+      <input id="browser_image" type="file" name="query_image" placeholder="Enter a URL for the image..." value="<%=@the_photo.image%>">
+    
+      <label for="browser_caption">Caption</label>
+      <textarea id="browser_caption" name="query_caption" placeholder="Enter a caption for the photo..."><%=@the_photo.caption%></textarea>
+    
+      <button>Update photo</button>
+    </form>
+  </dd>
+
+  <dt>Delete photo</dt>
+  <dd>
+    <a href="/delete_photo/<%=@the_photo.id%>">
+      Delete this photo
+    </a>
+  </dd>
+  <%else%>
+  <%end%>
 
 </dl>
 
