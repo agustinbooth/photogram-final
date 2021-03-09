@@ -63,5 +63,50 @@ class ApplicationController < ActionController::Base
 
   end
 
+  def feed
+
+  @user = User.all.where({:username => params.fetch("username")}).first
+
+  followers = @user.received_follow_requests
+  @accepted_followers = followers.where({:status => "accepted"})
+
+  following = @user.sent_follow_requests
+  @accepted_following = following.where({:status => "accepted"})
+  #user_following = @accepted_following.recipient
+
+  following_users = Array.new
+
+  @accepted_following.each do |a_follow|
+  
+    following_users.push(a_follow.recipient)
+
+  end 
+  
+  @feed = Array.new
+  feed_photos = Array.new
+
+  following_users.each do |a_user|
+  
+    feed_photos.push(a_user.own_photos)
+
+  end 
+
+  feed_photos.each do |a_photo_array|
+
+    a_photo_array.each do |a_photo|
+  
+    @feed.push(a_photo)
+
+    end
+
+  end
+
+   @feed = @feed.sort_by { |h | h[:created_at] }.reverse
+
+
+  render({:template => "users/feed.html.erb"})
+
+  end
+
 
 end

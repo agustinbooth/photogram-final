@@ -65,7 +65,8 @@ Rails.application.routes.draw do
   #READ
 
   get("/users", { :controller => "application", :action => "index" })
-  get("/users/:username", { :controller => "application", :action => "show" })   
+  get("/users/:username", { :controller => "application", :action => "show" })
+  get("/users/:username/feed", { :controller => "application", :action => "feed" })    
 
   # SIGN UP FORM
   get("/user_sign_up", { :controller => "user_authentication", :action => "sign_up_form" })        
