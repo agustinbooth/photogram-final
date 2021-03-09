@@ -34,26 +34,35 @@ class ApplicationController < ActionController::Base
   def show
 
     if @current_user.present?
+  
       username = params.fetch("username")
       @user = User.all.where({:username => username}).first
+      follow_request = FollowRequest.where({ :sender_id => @user.id }).first
 
-      followers = @user.received_follow_requests
+      # if follow_request.status == "accepted"
 
-      @accepted_followers = followers.where({:status => "accepted"})
-      @pending_followers = followers.where({:status => "pending"})
+        followers = @user.received_follow_requests
 
-      following = @user.sent_follow_requests
-      @accepted_following = following.where({:status => "accepted"})
+        @accepted_followers = followers.where({:status => "accepted"})
+        @pending_followers = followers.where({:status => "pending"})
 
-      accept = FollowRequest.all.where({:status => "accepted"})
-      @follows = accept.where({:recipient_id => @user.id, :sender_id => @current_user.id}).or(
+        following = @user.sent_follow_requests
+        @accepted_following = following.where({:status => "accepted"})
+
+        accept = FollowRequest.all.where({:status => "accepted"})
+        @follows = accept.where({:recipient_id => @user.id, :sender_id => @current_user.id}).or(
         accept.where({:recipient_id => @current_user.id, :sender_id => @user.id})
         )
 
 
+        render({:template => "users/show.html.erb"})
 
+      #else
 
-    render({:template => "users/show.html.erb"})
+       # redirect_to("/", { :alert => "You're not authorized for that." })  
+        
+      # end
+
 
     else
     
