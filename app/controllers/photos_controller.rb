@@ -12,11 +12,19 @@ class PhotosController < ApplicationController
     the_id = params.fetch("path_id")
 
     matching_photos = Photo.where({ :id => the_id })
-    @the_photo = matching_photos.at(0)
-    follow_request = FollowRequest.where({ :sender_id => @current_user.id, :recipient_id => @the_photo.owner.id }).first 
+    @the_photo = matching_photos.at(0)   
 
+    if @current_user.present?
+
+    follow_request = FollowRequest.where({ :sender_id => @current_user.id, :recipient_id => @the_photo.owner.id }).first   
 
     render({ :template => "photos/show.html.erb" })
+
+    else
+
+    redirect_to("/user_sign_in", { :alert => "You have to sign in first." })  
+
+    end  
     
   end
 
