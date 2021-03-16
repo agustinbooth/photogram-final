@@ -52,7 +52,7 @@ class ApplicationController < ActionController::Base
       accept.where({:recipient_id => @current_user.id, :sender_id => @user.id})
       )
 
-      if follow_request.present? && follow_request.status == "accepted"
+      if follow_request.present?
 
         render({:template => "users/show.html.erb"})
 

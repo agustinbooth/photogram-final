@@ -15,8 +15,6 @@ class Comment < ApplicationRecord
 
 validates(:photo_id, { :presence => true })
 
-validates(:body, { :presence => true })
-
 validates(:author_id, { :presence => true })
 
 #Methods
