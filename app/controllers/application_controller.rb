@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   
   def force_user_sign_in
     if @current_user == nil
-      redirect_to("/user_sign_in", { :notice => "You have to sign in first." })
+      redirect_to("/user_sign_in", { :alert => "You have to sign in first." })
     end
   end
 
@@ -37,9 +37,9 @@ class ApplicationController < ActionController::Base
   
       username = params.fetch("username")
       @user = User.all.where({:username => username}).first
-      follow_request = FollowRequest.where({ :sender_id => @user.id }).first
+      follow_request = FollowRequest.where({ :sender_id => @current_user.id, :recipient_id => @user.id }).first
 
-      # if follow_request.status == "accepted"
+      if follow_request.present? || username == @current_user.username
 
         followers = @user.received_follow_requests
 
@@ -57,11 +57,11 @@ class ApplicationController < ActionController::Base
 
         render({:template => "users/show.html.erb"})
 
-      #else
+      else
 
-       # redirect_to("/", { :alert => "You're not authorized for that." })  
+       redirect_to("/", { :alert => "You're not authorized for that." })  
         
-      # end
+      end
 
 
     else

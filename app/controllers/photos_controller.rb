@@ -12,10 +12,12 @@ class PhotosController < ApplicationController
     the_id = params.fetch("path_id")
 
     matching_photos = Photo.where({ :id => the_id })
-
     @the_photo = matching_photos.at(0)
+    follow_request = FollowRequest.where({ :sender_id => @current_user.id, :recipient_id => @the_photo.owner.id }).first 
+
 
     render({ :template => "photos/show.html.erb" })
+    
   end
 
   def create
