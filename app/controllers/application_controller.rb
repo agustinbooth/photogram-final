@@ -39,21 +39,28 @@ class ApplicationController < ActionController::Base
       @user = User.all.where({:username => username}).first
       follow_request = FollowRequest.where({ :sender_id => @current_user.id, :recipient_id => @user.id }).first
 
-      if follow_request.present? || username == @current_user.username
+      followers = @user.received_follow_requests
 
-        followers = @user.received_follow_requests
+      @accepted_followers = followers.where({:status => "accepted"})
+      @pending_followers = followers.where({:status => "pending"})
 
-        @accepted_followers = followers.where({:status => "accepted"})
-        @pending_followers = followers.where({:status => "pending"})
+      following = @user.sent_follow_requests
+      @accepted_following = following.where({:status => "accepted"})
 
-        following = @user.sent_follow_requests
-        @accepted_following = following.where({:status => "accepted"})
+      accept = FollowRequest.all.where({:status => "accepted"})
+      @follows = accept.where({:recipient_id => @user.id, :sender_id => @current_user.id}).or(
+      accept.where({:recipient_id => @current_user.id, :sender_id => @user.id})
+      )
 
-        accept = FollowRequest.all.where({:status => "accepted"})
-        @follows = accept.where({:recipient_id => @user.id, :sender_id => @current_user.id}).or(
-        accept.where({:recipient_id => @current_user.id, :sender_id => @user.id})
-        )
+      if follow_request.present? && follow_request.status == "accepted"
 
+        render({:template => "users/show.html.erb"})
+
+      elsif username == @current_user.username
+
+        render({:template => "users/show.html.erb"})
+
+      elsif @user.private == false
 
         render({:template => "users/show.html.erb"})
 
